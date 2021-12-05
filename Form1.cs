@@ -107,7 +107,7 @@ namespace CSV_to_Aiken
                         }
                         break;
                     case '"':
-                    case '\'': count++; break;
+                    /*case '\'':*/ count++; break;
                 }
             }
             str.Add(s.Substring(a));
