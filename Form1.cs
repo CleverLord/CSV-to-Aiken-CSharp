@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
 
@@ -113,7 +112,17 @@ namespace CSV_to_Aiken
             }
             str.Add(s.Substring(a));
             str.RemoveAt(str.Count() - 1);
-            return str;
+
+            List<string> str2 = new List<string>();
+            foreach (string sx in str)
+                str2.Add(removeRedundantParenthasies(sx));
+            return str2;
+        }
+        string removeRedundantParenthasies(string source)
+        {
+            if (source.Contains(','))
+                return source.Substring(1, source.Length - 2);
+            return source;
         }
     }
 }
