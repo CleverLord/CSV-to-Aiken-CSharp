@@ -39,11 +39,19 @@ namespace CSV_to_Aiken
             int questions = 0;
             while (csv.next())
             {
-                if (csv.GetColumnCount() < 4) continue;     //question must contain question, min.2 answers, correct answer
+                if (csv.GetColumnCount() < 4)
+                {
+                    onQuestionFailed(csv.getRawContent());
+                    continue;
+                }//question must contain question, min.2 answers, correct answer
                 int answerColumn = csv.GetColumnCount()-1;  //there might be a column with comemnts
                 while (answerColumn > 0 && csv.GetColumnValue(answerColumn).Length!=1)  //so we look for a column with one letter
                     answerColumn--;
-                if (answerColumn <= 0) continue;
+                if (answerColumn <= 0)
+                {
+                    onQuestionFailed(csv.getRawContent());
+                    continue;
+                }
 
                 //Now we now that the row is a question
                 questions++;
@@ -58,6 +66,10 @@ namespace CSV_to_Aiken
             }
             aikenTextBox.Text = aiken;
             infoBox.Text += "No. of questions:\n" + questions.ToString()+"\n";
+        }
+        public void onQuestionFailed(string notAQuestion)
+        {
+            infoBox.Text += $"Question failed:<{notAQuestion}>\n";
         }
     }
     public class CsvImporter
@@ -84,6 +96,10 @@ namespace CSV_to_Aiken
         public int GetColumnCount()
         {
             return content.Length;
+        }
+        public string getRawContent()
+        {
+            return data[dataPtr];
         }
         public string GetColumnValue(int column)
         {
